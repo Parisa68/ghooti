@@ -1,0 +1,37 @@
+# Go related
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Test binary, output of 'go test -cover'
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Ignore the binary folder
+bin/
+
+# Ignore the dependencies folder created by go mod
+vendor/
+
+# Ignore IntelliJ IDEA specific files
+.idea/
+
+# Ignore .DS_Store files on macOS
+.DS_Store
+
+# Ignore configuration files for editors and tools
+.vscode/
+*.swp
+*.swo
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
