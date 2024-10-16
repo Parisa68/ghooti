@@ -11,3 +11,5 @@ I am merging 2
 I am squashing 1
 
 I am squashing 2
+
+I am merging 3
