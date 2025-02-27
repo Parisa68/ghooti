@@ -7,6 +7,5 @@ version: 2
 updates:
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/" # Location of package manifests
-    file: "docker-compose.yml"
     schedule:
       interval: "weekly"
