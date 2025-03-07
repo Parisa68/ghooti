@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+      - v1
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,13 +14,15 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set Repository Name
         id: repo_name
         run: |
           REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           echo "repo_name=$REPO_NAME" >> $GITHUB_ENV
-          
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -28,24 +30,49 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate new tag
-        id: tag
+      - name: Generate new tag for main branch
+        if: github.ref == 'refs/heads/main'
+        id: tag_main
         uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
-          
+          WITH_V: true
+          TAG_CONTEXT: branch
+          INITIAL_VERSION: 2.0.0
+
+      - name: Generate new tag for v1 branch
+        if: github.ref == 'refs/heads/v1'
+        id: tag_v1
+        uses: anothrNick/github-tag-action@1.67.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+          WITH_V: true
+          TAG_CONTEXT: branch
+          INITIAL_VERSION: 1.0.0
+          RELEASE_BRANCHES: v1
+          BRANCH_IDENTIFIER: ''
+
+      - name: Set output tag
+        id: set_tag
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "tag=${{ steps.tag_main.outputs.new_tag }}" >> $GITHUB_ENV
+          else
+            echo "tag=${{ steps.tag_v1.outputs.new_tag }}" >> $GITHUB_ENV
+          fi
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           push: true
           no-cache: 'true'
           tags: |
-            ghcr.io/${{ env.repo_name }}:${{ steps.tag.outputs.new_tag }}
+            ghcr.io/${{ env.repo_name }}:${{ env.tag }}
           labels: |
             org.opencontainers.image.created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
             org.opencontainers.image.revision=${{ github.sha }}
 
       - name: run the image
-        run: docker run ghcr.io/${{ env.repo_name }}:${{ steps.tag.outputs.new_tag }}
-
+        run: docker run ghcr.io/${{ env.repo_name }}:${{ env.tag }}
