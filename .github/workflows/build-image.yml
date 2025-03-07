@@ -46,3 +46,6 @@ jobs:
             org.opencontainers.image.created=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
             org.opencontainers.image.revision=${{ github.sha }}
 
+      - name: run the image
+        run: docker run ghcr.io/${{ env.repo_name }}:${{ steps.tag.outputs.new_tag }}
+
