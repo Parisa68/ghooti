@@ -55,7 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
           WITH_V: true
-          CUSTOM_TAG: ${{ env.latest_v2 }}
+          INITIAL_VERSION: ${{ env.latest_v2 }}
           MAJOR_VERSION_TAG: v2
 
       - name: Generate new tag for v1 branch
@@ -66,7 +66,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
           WITH_V: true
-          CUSTOM_TAG: ${{ env.latest_v1 }}
+          INITIAL_VERSION: ${{ env.latest_v1 }}
           MAJOR_VERSION_TAG: v1
 
       - name: Set output tag
