@@ -58,7 +58,7 @@ jobs:
         uses: anothrNick/github-tag-action@1.67.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          INITIAL_VERSION: ${{ env.new_v2 }}
+          CUSTOM_TAG: ${{ env.new_v2 }}
 
       - name: Generate new tag for v1 branch
         if: github.ref == 'refs/heads/v1'
