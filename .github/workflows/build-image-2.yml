@@ -30,7 +30,7 @@ jobs:
           TAG_CONTEXT: branch
           GIT_API_TAGGING: true
           INITIAL_VERSION: v1.0.0
-          dry_run: true
+          DRY_RUN: true
 
       - name: print
         run: |
