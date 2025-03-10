@@ -28,6 +28,8 @@ jobs:
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: v1
           TAG_CONTEXT: branch
+          GIT_API_TAGGING: true
+          INITIAL_VERSION: v1.0.0
           dry_run: true
 
       - name: print
