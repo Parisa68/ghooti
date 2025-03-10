@@ -27,7 +27,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: v1
-          TAG_CONTEXT: repo
+          TAG_CONTEXT: branch
           GIT_API_TAGGING: true
           INITIAL_VERSION: v1.0.0
           DRY_RUN: true
