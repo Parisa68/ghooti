@@ -1,5 +1,3 @@
 Hi there
 I am gonna be v2
-the current version is v2.0.1
-the current version is v2.0.4
-test from zero
+the current version is v2.0.0
