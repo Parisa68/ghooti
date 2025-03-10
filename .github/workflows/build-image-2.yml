@@ -26,7 +26,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-          RELEASE_BRANCHES: main
           TAG_CONTEXT: repo
           dry_run: true
 
