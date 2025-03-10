@@ -26,12 +26,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-          TAG_CONTEXT: branch
+          RELEASE_BRANCHES: v1
+          TAG_CONTEXT: repo
+          dry_run: true
 
       - name: print
         run: |
           echo "part: ${{ steps.bump_tag.outputs.part }}"
           echo "tag: ${{ steps.bump_tag.outputs.tag }}"
           echo "new_tag: ${{ steps.bump_tag.outputs.new_tag }}"
-      
-
