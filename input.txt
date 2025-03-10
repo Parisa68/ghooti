@@ -2,3 +2,4 @@ Hi there
 I am gonna be v2
 the current version is v2.0.0
 try4 to update me to v2.0.1
+try to update me to v1.5.0
