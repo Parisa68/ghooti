@@ -27,7 +27,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: v1
-          TAG_CONTEXT: repo
+          TAG_CONTEXT: branch
           dry_run: true
 
       - name: print
