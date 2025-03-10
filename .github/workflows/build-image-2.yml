@@ -13,6 +13,8 @@ jobs:
       tag: ${{ steps.bump_tag.outputs.tag }}
       new_tag: ${{ steps.bump_tag.outputs.new_tag }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
         with:
