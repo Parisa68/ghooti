@@ -1,3 +1,2 @@
 Hi there
 I am gonna be v2
-the current version is v2.0.0
