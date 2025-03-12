@@ -1,37 +1,37 @@
-name: build image
-
-on:
-  push:
-    branches:
-      - v1
-jobs:
-  tag_release:
-    name: tag version
-    outputs:
-      part: ${{ steps.bump_tag.outputs.part }}
-      tag: ${{ steps.bump_tag.outputs.tag }}
-      new_tag: ${{ steps.bump_tag.outputs.new_tag }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: '0'
-          ref: v1
-      - name: Bump version and push tag
-        id: bump_tag
-        uses: anothrNick/github-tag-action@1.71.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: patch
-          RELEASE_BRANCHES: v1
-          TAG_CONTEXT: branch
-          DRY_RUN: true
-
-      - name: print
-        run: |
-          echo "part: ${{ steps.bump_tag.outputs.part }}"
-          echo "tag: ${{ steps.bump_tag.outputs.tag }}"
-          echo "new_tag: ${{ steps.bump_tag.outputs.new_tag }}"
+#name: build image
+#
+#on:
+#  push:
+#    branches:
+#      - v1
+#jobs:
+#  tag_release:
+#    name: tag version
+#    outputs:
+#      part: ${{ steps.bump_tag.outputs.part }}
+#      tag: ${{ steps.bump_tag.outputs.tag }}
+#      new_tag: ${{ steps.bump_tag.outputs.new_tag }}
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - uses: actions/checkout@v4
+#        with:
+#          fetch-depth: '0'
+#          ref: v1
+#      - name: Bump version and push tag
+#        id: bump_tag
+#        uses: anothrNick/github-tag-action@1.71.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          WITH_V: true
+#          DEFAULT_BUMP: patch
+#          RELEASE_BRANCHES: v1
+#          TAG_CONTEXT: branch
+#          DRY_RUN: true
+#
+#      - name: print
+#        run: |
+#          echo "part: ${{ steps.bump_tag.outputs.part }}"
+#          echo "tag: ${{ steps.bump_tag.outputs.tag }}"
+#          echo "new_tag: ${{ steps.bump_tag.outputs.new_tag }}"
