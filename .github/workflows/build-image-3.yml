@@ -24,12 +24,11 @@ jobs:
           if [ -z "$LATEST_V1" ]; then
             echo "No tags found for v1 branch, setting to v1.0.0"
             LATEST_V1="v1.0.0"
-          exit 0
+          else
+            IFS='.' read -r major minor patch <<< "$LATEST_V1"
+            NEW_V1="$major.$minor.$((patch + 1))"
+            echo "new_v1=$NEW_V1" >> $GITHUB_ENV
           fi
-          IFS='.' read -r major minor patch <<< "$LATEST_V1"
-          NEW_V1="$major.$minor.$((patch + 1))"
-          echo "new_v1=$NEW_V1" >> $GITHUB_ENV
-
       - name: Generate new tag for v1 branch
         id: tag_v1
         uses: anothrNick/github-tag-action@1.71.0
