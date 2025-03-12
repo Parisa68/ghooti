@@ -20,6 +20,7 @@ jobs:
         id: new_tags
         run: |
           LATEST_V1=$(git tag -l "v1.*" | sort -V | tail -n 1)
+          echo "Latest V1: $LATEST_V1"
           if [ -z "$LATEST_V1" ]; then
             LATEST_V1="v1.0.0"
           exit 0
