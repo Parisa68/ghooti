@@ -24,8 +24,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
 #          TAG_CONTEXT: branch
-          RELEASE_BRANCHES: main
-          DRY_RUN: true
+#          RELEASE_BRANCHES: main
 
       - name: print
         run: |
