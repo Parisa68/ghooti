@@ -26,7 +26,6 @@ jobs:
           TAG_CONTEXT: branch
           INITIAL_VERSION: 0.0.4
           RELEASE_BRANCHES: main
-          DRY_RUN: true
 
       - name: print
         run: |
