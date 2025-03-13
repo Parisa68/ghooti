@@ -6,9 +6,14 @@ on:
         required: false
         default: 'main'
 
+    outputs:
+      latest_tag: ${{ jobs.get-latest-tag.outputs.latest_tag }}
+
 jobs:
   get-latest-tag:
     runs-on: ubuntu-latest
+    outputs:
+      latest_tag: ${{ steps.latest-tag.outputs.latest_tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
