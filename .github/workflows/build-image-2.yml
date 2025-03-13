@@ -25,7 +25,8 @@ jobs:
           DEFAULT_BUMP: patch
           TAG_CONTEXT: branch
           RELEASE_BRANCHES: main
-          DRY_RUN: true
+          CUSTOM_TAG: v0.0.10
+#          DRY_RUN: true
 
       - name: print
         run: |
