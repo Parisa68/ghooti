@@ -1,3 +1,5 @@
+name: Get Latest Tag
+
 on:
   workflow_call:
     inputs:
@@ -6,10 +8,10 @@ on:
         required: false
         default: 'main'
         type: string
-
     outputs:
-      description: 'latest tag'
-      value: ${{ jobs.get-latest-tag.outputs.latest_tag }}
+      latest_tag:
+        description: 'latest tag'
+        value: ${{ jobs.get-latest-tag.outputs.latest_tag }}
 
 jobs:
   get-latest-tag:
