@@ -25,6 +25,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get latest tag in a branch
+        id: latest-tag
         run: |
           TAGS=$(git tag --merged "${{ inputs.branch || 'main' }}" | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
           echo "Latest tag: $TAGS"
@@ -33,4 +34,4 @@ jobs:
 
       - name: print
         run:  |
-          echo "latest_tag: ${{ steps.latest-tag.outputs.latest_tag  }}"
+          echo "latest_tag: ${{ steps.latest-tag.outputs.latest_tag }}"
