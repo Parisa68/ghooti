@@ -5,9 +5,11 @@ on:
         description: 'branch'
         required: false
         default: 'main'
+        type: string
 
     outputs:
-      latest_tag: ${{ jobs.get-latest-tag.outputs.latest_tag }}
+      description: 'latest tag'
+      value: ${{ jobs.get-latest-tag.outputs.latest_tag }}
 
 jobs:
   get-latest-tag:
@@ -22,7 +24,7 @@ jobs:
 
       - name: Get latest tag in a branch
         run: |
-          TAGS=$(git tag --merged "${{ github.event.inputs.branch || 'main' }}" | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
+          TAGS=$(git tag --merged "${{ inputs.branch || 'main' }}" | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
           echo "Latest tag: $TAGS"
           TAG_NO_V=$(echo "$TAGS" | sed 's/^v//')
           echo "latest_tag=$TAG_NO_V" >> $GITHUB_OUTPUT
