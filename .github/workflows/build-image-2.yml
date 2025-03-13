@@ -26,6 +26,7 @@ jobs:
           TAG_CONTEXT: branch
           RELEASE_BRANCHES: main
           DRY_RUN: true
+          VERBOSE: true
 
       - name: print
         run: |
