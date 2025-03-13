@@ -27,6 +27,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: v1
+          INITIAL_VERSION: 1.0.0
           TAG_CONTEXT: branch
           DRY_RUN: true
 
