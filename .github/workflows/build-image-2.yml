@@ -34,6 +34,7 @@ jobs:
 
       - name: print
         run: |
+          echo "latest_tag: ${{ needs.get-latest-tag.outputs.latest_tag }}"
           echo "part: ${{ steps.bump_tag.outputs.part }}"
           echo "tag: ${{ steps.bump_tag.outputs.tag }}"
           echo "new_tag: ${{ steps.bump_tag.outputs.new_tag }}"
