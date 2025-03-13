@@ -5,8 +5,12 @@ on:
     branches:
       - main
 jobs:
+  get-latest-tag:
+    uses: ./.github/workflows/get_latest_tag.yml
+
   tag_release:
     name: tag version
+    needs: get-latest-tag
     outputs:
       part: ${{ steps.bump_tag.outputs.part }}
       tag: ${{ steps.bump_tag.outputs.tag }}
@@ -26,7 +30,7 @@ jobs:
           TAG_CONTEXT: branch
           RELEASE_BRANCHES: main
           DRY_RUN: true
-          VERBOSE: true
+          INITIAL_VERSION: ${{ needs.get-latest-tag.outputs.latest_tag }}
 
       - name: print
         run: |

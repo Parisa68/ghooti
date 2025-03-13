@@ -1,0 +1,23 @@
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'branch'
+        required: false
+        default: 'main'
+
+jobs:
+  get-latest-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag in a branch
+        run: |
+          TAGS=$(git tag --merged "${{ github.event.inputs.branch || 'main' }}" | grep -E '^v?[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1)
+          echo "Latest tag: $TAGS"
+          TAG_NO_V=$(echo "$TAGS" | sed 's/^v//')
+          echo "latest_tag=$TAG_NO_V" >> $GITHUB_OUTPUT
