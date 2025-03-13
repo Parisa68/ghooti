@@ -30,3 +30,7 @@ jobs:
           echo "Latest tag: $TAGS"
           TAG_NO_V=$(echo "$TAGS" | sed 's/^v//')
           echo "latest_tag=$TAG_NO_V" >> $GITHUB_OUTPUT
+
+      - name: print
+        run:  |
+          echo "latest_tag: ${{ steps.latest-tag.outputs.latest_tag  }}"
