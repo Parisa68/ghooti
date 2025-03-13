@@ -26,7 +26,7 @@ jobs:
           TAG_CONTEXT: branch
           RELEASE_BRANCHES: main
           CUSTOM_TAG: v.0.0.9
-          DRY_RUN: true
+#          DRY_RUN: true
 
       - name: print
         run: |
