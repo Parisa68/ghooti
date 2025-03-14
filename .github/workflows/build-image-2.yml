@@ -13,7 +13,9 @@ jobs:
 
       - name: Show tags
         run: |
+          echo "repo:"
           git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)'
+          echo "branch:"
           git tag --list --merged HEAD --sort=-committerdate
   tag_release:
     name: tag version
