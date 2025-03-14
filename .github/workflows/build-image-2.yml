@@ -30,7 +30,7 @@ jobs:
           TAG_CONTEXT: branch
           RELEASE_BRANCHES: main
           DRY_RUN: true
-          INITIAL_VERSION: ${{ needs.get-latest-tag.outputs.latest_tag }}
+#          INITIAL_VERSION: ${{ needs.get-latest-tag.outputs.latest_tag }}
 
       - name: print
         run: |
