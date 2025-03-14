@@ -8,6 +8,13 @@ jobs:
   get-latest-tag:
     uses: ./.github/workflows/get_latest_tag.yml
 
+
+  tags:
+    name: show_tags
+    runs-on: ubuntu-latest
+    run: |
+      git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)'
+      git git tag --list --merged HEAD --sort=-committerdate
   tag_release:
     name: tag version
     needs: get-latest-tag
