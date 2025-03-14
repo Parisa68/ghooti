@@ -12,9 +12,14 @@ jobs:
   tags:
     name: show_tags
     runs-on: ubuntu-latest
-    run: |
-      git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)'
-      git git tag --list --merged HEAD --sort=-committerdate
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show tags
+        run: |
+          git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)'
+          git tag --list --merged HEAD --sort=-committerdate
+
   tag_release:
     name: tag version
     needs: get-latest-tag
