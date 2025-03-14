@@ -11,12 +11,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Show tags
+      - name: Get Tags for Repository Context
         run: |
-          echo "repo:"
-          git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)'
-          echo "branch:"
-          git tag --list --merged HEAD --sort=-committerdate
+          echo "Fetching tags for repository..."
+          git_refs=$(git for-each-ref --sort=-v:refname --format '%(refname:lstrip=2)')
+          echo "Git Refs:"
+          echo "$git_refs"
+          tagFmt="^v?[0-9]+\.[0-9]+\.[0-9]+$"
+          matching_tag_refs=$( (grep -E "$tagFmt" <<< "$git_refs") || true)
+          echo "Matching Tag Refs:"
+          echo "$matching_tag_refs"
+          tag=$(head -n 1 <<< "$matching_tag_refs")
+          echo "Latest Tag: $tag"
+
+      - name: Get Tags for Branch Context
+        run: |
+          echo "Fetching tags for merged branches..."
+          git_refs=$(git tag --list --merged HEAD --sort=-committerdate)
+          echo "Git Tags:"
+          echo "$git_refs"
+          
+          tagFmt="^v?[0-9]+\.[0-9]+\.[0-9]+$"
+          matching_tag_refs=$( (grep -E "$tagFmt" <<< "$git_refs") || true)
+          echo "Matching Tag Refs:"
+          echo "$matching_tag_refs"
+          tag=$(head -n 1 <<< "$matching_tag_refs")
+          echo "Latest Tag: $tag"
+
   tag_release:
     name: tag version
     outputs:
