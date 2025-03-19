@@ -1,9 +1,9 @@
 name: build image
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - closed
 jobs:
   get-latest-tag:
     uses: ./.github/workflows/get_latest_tag.yml
