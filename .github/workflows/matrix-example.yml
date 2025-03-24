@@ -1,0 +1,29 @@
+name: Matrix Example
+
+on:
+  push:
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Generate matrix dynamically
+        id: set-matrix
+        run: |
+          set -eux
+          DATA=$(jq -c '{ include: [{"component":"foo","bump":"major"}, {"component":"bar","bump":"minor"}] }' <<< '{}')
+          echo "matrix=$DATA" >> "$GITHUB_OUTPUT"
+
+  run-matrix:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - name: Run for each component-bump pair
+        run: echo "Running job for component=${{ matrix.component }}, bump=${{ matrix.bump }}"
