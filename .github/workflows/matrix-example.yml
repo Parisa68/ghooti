@@ -17,18 +17,18 @@ jobs:
 
       - name: Add first tuple
         run: |
-          cat matrix.json | jq '.include += [{"component":"foo","bump":"major"}]' > matrix.tmp.json
+          jq '.include += [{"component":"foo","bump":"major"}]' matrix.json > matrix.tmp.json
           mv matrix.tmp.json matrix.json
 
       - name: Add second tuple
         run: |
-          cat matrix.json | jq '.include += [{"component":"bar","bump":"minor"}]' > matrix.tmp.json
+          jq '.include += [{"component":"bar","bump":"minor"}]' matrix.json > matrix.tmp.json
           mv matrix.tmp.json matrix.json
 
       - name: Set matrix output
         id: set-matrix
         run: |
-          MATRIX=$(cat matrix.json)
+          MATRIX=$(jq -c . matrix.json)  # Compact JSON
           echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
   run-matrix:
