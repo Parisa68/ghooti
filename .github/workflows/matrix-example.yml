@@ -12,19 +12,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate initial matrix
+      - name: Initialize matrix file
+        run: echo '{"include":[]}' > matrix.json
+
+      - name: Add first tuple
+        run: |
+          cat matrix.json | jq '.include += [{"component":"foo","bump":"major"}]' > matrix.tmp.json
+          mv matrix.tmp.json matrix.json
+
+      - name: Add second tuple
+        run: |
+          cat matrix.json | jq '.include += [{"component":"bar","bump":"minor"}]' > matrix.tmp.json
+          mv matrix.tmp.json matrix.json
+
+      - name: Set matrix output
         id: set-matrix
         run: |
-          set -eux
-          DATA=$(echo '{}' | jq -c '.include = [{"component":"foo","bump":"major"}]')
-          echo "matrix=$DATA" >> "$GITHUB_OUTPUT"
-
-      - name: Append new tuple to matrix
-        id: update-matrix
-        run: |
-          set -eux
-          NEW_DATA=$(echo '${{ steps.set-matrix.outputs.matrix }}' | jq -c '.include += [{"component":"bar","bump":"minor"}]')
-          echo "matrix=$NEW_DATA" >> "$GITHUB_OUTPUT"
+          MATRIX=$(cat matrix.json)
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
 
   run-matrix:
     needs: generate-matrix
