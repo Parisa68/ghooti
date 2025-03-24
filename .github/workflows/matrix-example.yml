@@ -12,12 +12,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate matrix dynamically
+      - name: Generate initial matrix
         id: set-matrix
         run: |
           set -eux
-          DATA=$(jq -c '{ include: [{"component":"foo","bump":"major"}, {"component":"bar","bump":"minor"}] }' <<< '{}')
+          DATA=$(echo '{}' | jq -c '.include = [{"component":"foo","bump":"major"}]')
           echo "matrix=$DATA" >> "$GITHUB_OUTPUT"
+
+      - name: Append new tuple to matrix
+        id: update-matrix
+        run: |
+          set -eux
+          NEW_DATA=$(echo '${{ steps.set-matrix.outputs.matrix }}' | jq -c '.include += [{"component":"bar","bump":"minor"}]')
+          echo "matrix=$NEW_DATA" >> "$GITHUB_OUTPUT"
 
   run-matrix:
     needs: generate-matrix
