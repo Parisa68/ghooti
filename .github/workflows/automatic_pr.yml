@@ -26,4 +26,5 @@ jobs:
           title: "Update input.txt"
           body: "Updates input.txt"
           branch: "update-input"
+          base: v1
           delete-branch: true
