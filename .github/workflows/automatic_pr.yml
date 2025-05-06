@@ -7,6 +7,9 @@ on:
 
 jobs:
   update-input:
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +23,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          token: '${{ secrets.GITHUB_TOKEN }}'
           commit-message: "Update input.txt"
           title: "Update input.txt"
           body: "Updates input.txt"
