@@ -2,8 +2,6 @@ name: create PR
 
 on:
   push:
-    branches:
-      - main
 
 jobs:
   update-input:
