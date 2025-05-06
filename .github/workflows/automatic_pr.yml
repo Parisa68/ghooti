@@ -1,0 +1,27 @@
+name: create PR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-input:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Modify input.txt
+        run: |
+          echo "$(date)" >> input.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Update input.txt"
+          title: "Update input.txt"
+          body: "Updates input.txt"
+          branch: "update-input"
+          delete-branch: true
