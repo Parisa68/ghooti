@@ -1,0 +1,20 @@
+name: docker test
+
+on:
+  push:
+
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Docker Version
+        run: docker --version
+      - name: instll docker
+        run: |
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install -y docker-ce
+      - name: Check Docker Version
+        run: docker --version
