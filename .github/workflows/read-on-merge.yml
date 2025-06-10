@@ -1,0 +1,19 @@
+name: Read on Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  read-and-print:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-result
+
+      - name: Show contents
+        run: cat result.txt
