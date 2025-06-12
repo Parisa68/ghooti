@@ -38,7 +38,7 @@ jobs:
           echo "$bumps_pattern"
           commit_messages=$(git log origin/main..origin/precheck-test2 --pretty=format:"%s")
           echo "$commit_messages"
-          all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}..origin/${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
+          all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
           {
           echo "all_matches<<EOF"
           echo "$all_matches"
