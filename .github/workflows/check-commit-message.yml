@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "Checking for typos in bumps..."
           components=("a" "b" "c")
-          bumps=($env.BUMPS)
+          bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
           pattern="#(${bumps_pattern})_(${components_pattern})"
