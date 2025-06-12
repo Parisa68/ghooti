@@ -55,6 +55,8 @@ jobs:
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
           pattern="#(${bumps_pattern})_(${components_pattern})"
+          echo "____________________"
+          echo "${{steps.check-commit-messages.outputs.all_matches}}"
           wrong_matches=$(echo "${{steps.check-commit-messages.outputs.all_matches}}" | grep -Ev "$pattern" || true)
           echo "$wrong_matches"
           {
