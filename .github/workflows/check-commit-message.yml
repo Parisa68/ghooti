@@ -32,7 +32,7 @@ jobs:
           all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
           {
           echo "all_matches<<EOF"
-          echo "$all_matches"
+          printf "%s\n" "$all_matches"
           echo "EOF"
           } >> $GITHUB_OUTPUT
 
@@ -48,7 +48,7 @@ jobs:
           pattern="#(${bumps_pattern})_(${components_pattern})"
           echo "____________________"
           echo "${{steps.check-commit-messages.outputs.all_matches}}"
-          wrong_matches=$(echo -e "${{steps.check-commit-messages.outputs.all_matches}}" | grep -Ev "$pattern" || true)
+          wrong_matches=$(printf "%s\n" "${{steps.check-commit-messages.outputs.all_matches}}" | grep -Ev "$pattern" || true)
           echo "$wrong_matches"
           {
           echo "wrong_matches<<EOF"
