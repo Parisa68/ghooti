@@ -29,7 +29,7 @@ jobs:
         id: check-commit-messages
         run: |
           echo "Checking commit messages..."
-          bumps=($env.BUMPS)
+          bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           echo "$bumps_pattern"
           commit_messages=$(git log origin/main..origin/precheck-test2 --pretty=format:"%s")
