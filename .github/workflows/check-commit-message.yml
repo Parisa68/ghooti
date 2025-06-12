@@ -1,0 +1,54 @@
+name: Check Commit Messages
+on:
+  pull_request:
+    types:
+        - opened
+        - synchronize
+        - reopened
+    branches:
+      - main
+
+env:
+  BUMPS: "major|minor|patch"
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check commit messages for bumps
+        id: check-commit-messages
+        run: |
+          echo "Checking commit messages..."
+          bumps_pattern=$(IFS='|'; echo "${env.BUMPS[*]}")
+          all_matches=$(git log "${{ github.event.pull_request.base.ref }}..${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_")
+          echo "$all_matches"
+          echo "all_matches=$all_matches" >> $GITHUB_OUTPUT
+
+      - name: Check bumps typo
+        id: check-typos
+        if: steps.check-commit-messages.outputs.all_matches != ''
+        run: |
+          echo "Checking for typos in bumps..."
+          components=("a" "b" "c")
+          bumps_pattern=$(IFS='|'; echo "${env.BUMPS[*]}")
+          components_pattern=$(IFS='|'; echo "${components[*]}")
+          pattern="#(${bumps_pattern})_(${components_pattern})"
+          wrong_matches=$(echo "${{steps.check-commit-messages.outputs.all_matches}}" | grep -Ev "$pattern")
+          echo "$wrong_matches"
+          echo "wrong_matches=$wrong_matches" >> $GITHUB_OUTPUT
+
+      - name: Fail if typos found
+        if: steps.check-typos.outputs.wrong_matches != ''
+        run: |
+          echo "Typos found in commit messages:"
+          echo "${{ steps.check-typos.outputs.wrong_matches }}"
+          exit 1
+          
+      
+          
+        
