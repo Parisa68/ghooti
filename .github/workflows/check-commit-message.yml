@@ -36,7 +36,7 @@ jobs:
           bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           echo "$bumps_pattern"
-          commit_messages=$(git log origin/main..origin/precheck-test2 --pretty=format:"%s")
+          commit_messages=$(git log  origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s")
           echo "$commit_messages"
           all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
           {
