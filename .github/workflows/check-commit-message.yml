@@ -21,7 +21,9 @@ jobs:
           fetch-depth: 0
           
       - name: Fetch base branch
-        run: git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+        run: |
+          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
+          git fetch origin ${{ github.head_ref }} --depth=1
         
       - name: Check commit messages for bumps
         id: check-commit-messages
@@ -29,7 +31,7 @@ jobs:
           echo "Checking commit messages..."
           bumps=($env.BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
-          all_matches=$(git log "origin/${{ github.event.pull_request.base.ref }}..${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_")
+          all_matches=$(git log "${{ github.event.pull_request.base.ref }}..${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_")
           echo "$all_matches"
           echo "all_matches=$all_matches" >> $GITHUB_OUTPUT
 
