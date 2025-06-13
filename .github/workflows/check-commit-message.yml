@@ -26,9 +26,7 @@ jobs:
           echo "Checking commit messages..."
           bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
-          echo "$bumps_pattern"
           commit_messages=$(git log  origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s")
-          echo "$commit_messages"
           all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
           {
           echo "all_matches<<EOF"
@@ -46,10 +44,7 @@ jobs:
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
           pattern="#(${bumps_pattern})_(${components_pattern})([^a-zA-Z0-9_]|$)"
-          echo "____________________"
-          echo "${{steps.check-commit-messages.outputs.all_matches}}"
           wrong_matches=$(echo "${{ steps.check-commit-messages.outputs.all_matches }}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -Ev "$pattern" || true)
-          echo "$wrong_matches"
           {
           echo "wrong_matches<<EOF"
           echo "$wrong_matches"
