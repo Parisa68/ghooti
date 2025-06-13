@@ -48,7 +48,7 @@ jobs:
           pattern="#(${bumps_pattern})_(${components_pattern})([^a-zA-Z0-9_]|$)"
           echo "____________________"
           echo "${{steps.check-commit-messages.outputs.all_matches}}"
-          wrong_matches=$("${{steps.check-commit-messages.outputs.all_matches}}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -Ev "$pattern" || true)
+          wrong_matches=$(echo "${{ steps.check-commit-messages.outputs.all_matches }}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -Ev "$pattern" || true)
           echo "$wrong_matches"
           {
           echo "wrong_matches<<EOF"
