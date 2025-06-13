@@ -10,6 +10,7 @@ on:
 
 env:
   BUMPS: "major minor patch"
+  COMPONENTS: "a b c"
 
 jobs:
   check-commit-message:
@@ -39,7 +40,7 @@ jobs:
         if: steps.check-commit-messages.outputs.all_matches != ''
         run: |
           echo "Checking for typos in bumps..."
-          components=("a" "b" "c")
+          components=($COMPONENTS)
           bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
