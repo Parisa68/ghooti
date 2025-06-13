@@ -19,21 +19,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
-      - name: Fetch base branch
-        run: |
-          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1
-          git fetch origin ${{ github.head_ref }} --depth=1
         
       - name: Check commit messages for bumps
         id: check-commit-messages
         run: |
           echo "Checking commit messages..."
-          bumps=($env.BUMPS)
+          bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
-          all_matches=$(log main..precheck-test2 --pretty=format:"%s" | grep -E "#(${bumps_pattern})_")
+          echo "$bumps_pattern"
+          commit_messages=$(git log  origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s")
+          echo "$commit_messages"
+          all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
+          {
+          echo "all_matches<<EOF"
           echo "$all_matches"
-          echo "all_matches=$all_matches" >> $GITHUB_OUTPUT
+          echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Check bumps typo
         id: check-typos
@@ -41,13 +42,19 @@ jobs:
         run: |
           echo "Checking for typos in bumps..."
           components=("a" "b" "c")
-          bumps=($env.BUMPS)
+          bumps=($BUMPS)
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
-          pattern="#(${bumps_pattern})_(${components_pattern})"
-          wrong_matches=$(echo "${{steps.check-commit-messages.outputs.all_matches}}" | grep -Ev "$pattern")
+          pattern="#(${bumps_pattern})_(${components_pattern})([^a-zA-Z0-9_]|$)"
+          echo "____________________"
+          echo "${{steps.check-commit-messages.outputs.all_matches}}"
+          wrong_matches=$(echo "${{ steps.check-commit-messages.outputs.all_matches }}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -Ev "$pattern" || true)
           echo "$wrong_matches"
-          echo "wrong_matches=$wrong_matches" >> $GITHUB_OUTPUT
+          {
+          echo "wrong_matches<<EOF"
+          echo "$wrong_matches"
+          echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Fail if typos found
         if: steps.check-typos.outputs.wrong_matches != ''
