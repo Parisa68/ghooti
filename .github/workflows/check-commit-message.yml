@@ -44,7 +44,7 @@ jobs:
           read -a bumps <<< "$BUMPS"
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
-          pattern="#(${bumps_pattern})_(${components_pattern})([^a-zA-Z0-9_]|$)"
+          pattern="#(${bumps_pattern})_(${components_pattern})$"
           wrong_matches=$(echo "${{ steps.check-commit-messages.outputs.all_matches }}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -Ev "$pattern" || true)
           {
           echo "wrong_matches<<EOF"
