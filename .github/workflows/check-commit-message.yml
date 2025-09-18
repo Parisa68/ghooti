@@ -2,54 +2,50 @@ name: Check Commit Messages
 on:
   pull_request:
     types:
-        - opened
-        - synchronize
-        - reopened
+      - opened
+      - synchronize
+      - reopened
     branches:
       - main
 
 env:
   BUMPS: "major minor patch"
+  COMPONENTS: "la b c"
 
 jobs:
   check-commit-message:
     runs-on: ubuntu-latest
+    env:
+      BASE_REF: ${{ github.event.pull_request.base.ref }}
+      HEAD_REF: ${{ github.head_ref }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-        
-      - name: Check commit messages for bumps
+
+      - name: Find commit messages with bumps
         id: check-commit-messages
         run: |
-          echo "Checking commit messages..."
-          bumps=($BUMPS)
+          read -a bumps <<< "$BUMPS"
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
-          echo "$bumps_pattern"
-          commit_messages=$(git log  origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s")
-          echo "$commit_messages"
-          all_matches=$(git log origin/"${{ github.event.pull_request.base.ref }}"..origin/"${{ github.head_ref }}" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
+          all_matches=$(git log origin/"$BASE_REF"..origin/"$HEAD_REF" --pretty=format:"%s" | grep -E "#(${bumps_pattern})_" || true)
           {
           echo "all_matches<<EOF"
           echo "$all_matches"
           echo "EOF"
           } >> $GITHUB_OUTPUT
 
-      - name: Check bumps typo
+      - name: Check typo in component names
         id: check-typos
         if: steps.check-commit-messages.outputs.all_matches != ''
         run: |
-          echo "Checking for typos in bumps..."
-          components=("a" "b" "c")
-          bumps=($BUMPS)
+          read -a components <<< "$COMPONENTS"
+          read -a bumps <<< "$BUMPS"
           bumps_pattern=$(IFS='|'; echo "${bumps[*]}")
           components_pattern=$(IFS='|'; echo "${components[*]}")
-          pattern="#(${bumps_pattern})_(${components_pattern})([^a-zA-Z0-9_]|$)"
-          echo "____________________"
-          echo "${{steps.check-commit-messages.outputs.all_matches}}"
+          pattern="#(${bumps_pattern})_(${components_pattern})$"
           wrong_matches=$(echo "${{ steps.check-commit-messages.outputs.all_matches }}" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -Ev "$pattern" || true)
-          echo "$wrong_matches"
           {
           echo "wrong_matches<<EOF"
           echo "$wrong_matches"
