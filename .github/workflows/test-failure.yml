@@ -1,0 +1,23 @@
+name: Failure Example
+
+on:
+  push:
+
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Step 1
+        run: |
+          echo "Step 1"
+          exit 1  
+
+      - name: Step 2 (runs always)
+        if: always()
+        run: echo "step 2"
+
+      - name: Step 3
+        run: echo " step 3"
