@@ -13,11 +13,14 @@ jobs:
       - name: Step 1
         run: |
           echo "Step 1"
-          exit 0  
+          exit 1  
 
       - name: Step 2 (runs always)
         if: always()
         run: echo "step 2"
+
+      - name: Step 3
+        run: echo " step 3"
 
       - name: Step 3
         run: echo " step 3"
